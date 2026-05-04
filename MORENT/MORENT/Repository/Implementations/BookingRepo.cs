@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MORENT.Common.Enums;
 using MORENT.Context;
 using MORENT.Dtos;
 using MORENT.Repository.Interfaces;
@@ -13,10 +14,10 @@ namespace MORENT.Repository.Implementations
         {
             _context = context;
         }
-        public async Task<List<GetTopBookings>> GetTopBookingsAsync()
+        public async Task<List<GetTopBookingsDto>> GetTopBookingsAsync()
         {
             var result = await _context.Bookings.GroupBy(b => b.Car.Category)
-                .Select(g => new GetTopBookings
+                .Select(g => new GetTopBookingsDto
                 {
                     Category = g.Key,
                     Count = g.Count()
@@ -25,22 +26,47 @@ namespace MORENT.Repository.Implementations
             return result;
         }
 
-        public async Task<List<GetBookingDto>> GetRecent()
+        public async Task<List<GetRecentBookingsDto>> GetRecent()
         {
             var result = await _context.Bookings.Include(b=>b.Car)
                 .OrderByDescending(b => b.PickupDate)
                 .Take(4)
-                .Select(b => new GetBookingDto
+                .Select(b => new GetRecentBookingsDto
                 {
                     CarName = b.Car.Brand,
                     Category = b.Car.Category,
                     ImageUrl = b.Car.ImageUrl,
-                    PickUpDate = b.PickupDate,
+                    PickupDate = b.PickupDate,
                     TotalPrice = b.TotalPrice
 
                 }).ToListAsync();
 
             return result;
+        }
+
+
+        public Task<GetBookingDto?> GetActiveRental()
+        {
+            //to do => auto mapper
+            return _context.Bookings
+                .Select(b => new GetBookingDto
+                {
+                    CarName = b.Car.Brand,
+                    Status = b.Status,
+                    DropoffLocation = b.DropoffLocation,
+                    ImageUrl = b.Car.ImageUrl,
+                    Category = b.Car.Category,
+                    PickupDate = b.PickupDate,
+                    PickupLocation = b.PickupLocation,
+                    DropoffDate = b.DropoffDate,
+                    TotalPrice = b.TotalPrice,
+                    DropoffLat = b.DropoffLat,
+                    DropoffLng = b.DropoffLng,
+                    PickupLat = b.PickupLat,
+                    PickupLng = b.PickupLng,
+                    DropoffTime = TimeOnly.FromDateTime(b.DropoffDate),
+                    PickupTime = TimeOnly.FromDateTime(b.PickupDate)
+                }).SingleOrDefaultAsync(b=>b.Status == BookingStatues.Active);
         }
     }
 

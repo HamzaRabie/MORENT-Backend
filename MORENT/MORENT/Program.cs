@@ -20,12 +20,25 @@ namespace MORENT
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             //   builder.Services.AddOpenApi();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("any",
+                    policy =>
+                    {
+                        policy
+                            .WithOrigins("http://localhost:4200") 
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<AppDbContext>(opt =>
                         opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+
 
             builder.Services.AddScoped<IBookingRepo,BookingRepo>();
             builder.Services.AddScoped<IBookingService,BookingService>();
@@ -40,6 +53,8 @@ namespace MORENT
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("any");
 
             app.UseAuthorization();
 

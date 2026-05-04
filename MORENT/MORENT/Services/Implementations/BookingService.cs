@@ -13,12 +13,17 @@ namespace MORENT.Services.Implementations
             this.bookingRepo = bookingRepo;
         }
 
-        public async Task<List<GetBookingDto>> GetRecent()
+        public async Task<GetBookingDto?> GetActiveRental()
+        {
+            return await bookingRepo.GetActiveRental();
+        }
+
+        public async Task<List<GetRecentBookingsDto>> GetRecent()
         {
             return await bookingRepo.GetRecent();
         }
 
-        public async Task<List<GetTopBookings>> GetTopBookings()
+        public async Task<List<GetTopBookingsDto>> GetTopBookings()
         {
             return await bookingRepo.GetTopBookingsAsync();
         }

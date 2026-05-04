@@ -5,7 +5,8 @@ namespace MORENT.Repository.Interfaces
 {
     public interface IBookingRepo
     {
-        Task<List<GetTopBookings>> GetTopBookingsAsync();
-        Task<List<GetBookingDto>> GetRecent();
+        Task<List<GetTopBookingsDto>> GetTopBookingsAsync();
+        Task<List<GetRecentBookingsDto>> GetRecent();
+        Task<GetBookingDto?> GetActiveRental();
     }
 }

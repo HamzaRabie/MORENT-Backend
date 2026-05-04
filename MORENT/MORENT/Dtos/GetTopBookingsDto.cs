@@ -1,6 +1,6 @@
 ﻿namespace MORENT.Dtos
 {
-    public class GetTopBookings
+    public record GetTopBookingsDto
     {
         public  string Category { get; set; } = string.Empty!;
         public int Count { get; set; }

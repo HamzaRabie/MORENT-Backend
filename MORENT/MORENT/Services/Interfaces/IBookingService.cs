@@ -4,7 +4,8 @@ namespace MORENT.Services.Interfaces
 {
     public interface IBookingService
     {
-        Task<List<GetTopBookings>> GetTopBookings();
-        Task<List<GetBookingDto>> GetRecent();
+        Task<List<GetTopBookingsDto>> GetTopBookings();
+        Task<List<GetRecentBookingsDto>> GetRecent();
+        Task<GetBookingDto?> GetActiveRental();
     }
 }

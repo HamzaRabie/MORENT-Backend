@@ -36,5 +36,16 @@ namespace MORENT.Controllers
             }
             return Ok(result);
         }
+
+        [HttpGet("active")]
+        public async Task<IActionResult> GetActiveBookingAsync()
+        {
+            var result = await bookingService.GetActiveRental();
+            if (result == null)
+            {
+                return NotFound("No Active Rents Found");
+            }
+            return Ok(result);
+        }
     }
 }
