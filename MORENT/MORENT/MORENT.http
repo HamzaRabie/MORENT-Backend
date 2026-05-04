@@ -1,0 +1,6 @@
+@MORENT_HostAddress = http://localhost:5100
+
+GET {{MORENT_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
