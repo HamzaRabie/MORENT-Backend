@@ -42,6 +42,8 @@ namespace MORENT
 
             builder.Services.AddScoped<IBookingRepo,BookingRepo>();
             builder.Services.AddScoped<IBookingService,BookingService>();
+            builder.Services.AddScoped<ICarRepo,CarRepo>();
+            builder.Services.AddScoped<ICarService,CarService>();
 
             var app = builder.Build();
 
