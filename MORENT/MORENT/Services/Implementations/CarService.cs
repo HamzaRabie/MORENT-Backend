@@ -17,5 +17,9 @@ namespace MORENT.Services.Implementations
         {
             return await _carRepo.GetAllAsync(filters);
         }
+        public async Task<GetCarDetailsDto> GetByIdAsync(Guid id)
+        {
+            return await _carRepo.GetByIdAsync(id);
+        }
     }
 }

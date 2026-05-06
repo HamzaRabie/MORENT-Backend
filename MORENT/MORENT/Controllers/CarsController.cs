@@ -16,10 +16,19 @@ namespace MORENT.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync([FromQuery]CarsFiltersDto filters)
+        public async Task<IActionResult> GetAllAsync([FromQuery] CarsFiltersDto filters)
         {
             var res = await _carService.GetAllAsync(filters);
-            if(res == null)
+            if (res == null)
+                return NotFound();
+            return Ok(res);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync(Guid id)
+        {
+            var res = await _carService.GetByIdAsync(id);
+            if (res == null)
                 return NotFound();
             return Ok(res);
         }

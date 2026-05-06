@@ -12,12 +12,17 @@ namespace MORENT.Context
                 .Property(c => c.PricePerDay)
                 .HasPrecision(18, 2);
 
+            modelBuilder.Entity<Car>()
+                .Property(c => c.OriginalPrice)
+                .HasPrecision(18, 2);
+
             modelBuilder.Entity<Booking>()
                 .Property(b => b.TotalPrice)
                 .HasPrecision(18, 2);
         }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
     }
 }

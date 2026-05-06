@@ -7,5 +7,6 @@ namespace MORENT.Repository.Interfaces
     public interface ICarRepo
     {
         Task<GetAllCarsDto> GetAllAsync(CarsFiltersDto filters);
+        Task<GetCarDetailsDto?> GetByIdAsync(Guid id);
     }
 }
