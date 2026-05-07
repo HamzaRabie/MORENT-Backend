@@ -1,10 +1,8 @@
-﻿namespace MORENT.Models
+﻿namespace MORENT.Dtos
 {
-    public class Booking
+    public record CreatePaymentDto
     {
-        public Guid Id { get; set; }
         public Guid CarId { get; set; }
-        public Car Car { get; set; } = default!;
         public string PickupLocation { get; set; } = string.Empty;
         public double PickupLat { get; set; }
         public double PickupLng { get; set; }
@@ -13,8 +11,10 @@
         public double DropoffLat { get; set; }
         public double DropoffLng { get; set; }
         public DateTime DropoffDate { get; set; }
-        public decimal TotalPrice { get; set; }
-        public string Status { get; set; } = string.Empty;
-        public  Payment? Payment { get; set; }
+        public string PaymentMethod { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
+        public string City { get; set; } = string.Empty;
     }
 }
