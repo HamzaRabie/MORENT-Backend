@@ -19,8 +19,6 @@ namespace MORENT.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePayment([FromBody] CreatePaymentDto paymentDto)
         {
-            int[] a = new int[3];
-            int x= a.Length;
             var result = await _paymentService.CreatePayment(paymentDto);
             if (result.Status == "Failed")
                 return BadRequest(result);
