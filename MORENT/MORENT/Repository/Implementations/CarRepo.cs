@@ -27,7 +27,7 @@ namespace MORENT.Repository.Implementations
            
             query = query.Where(c => c.PricePerDay <= filters.Price);
 
-            query = query.Where(c=>c.IsAvailable);
+         //   query = query.Where(c=>c.IsAvailable); not needed as we will check on payment 
 
             int total = await query.CountAsync();
 

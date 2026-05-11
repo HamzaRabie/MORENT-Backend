@@ -37,43 +37,40 @@ namespace MORENT.Repository.Implementations
             if (car == null)
                 return new PaymentResponseDto { Message = "Car Not Found", Status = "Failed" };
 
-            var days = (paymentDto.DropoffDate - paymentDto.PickupDate).Days;
-            if (days <= 0)
-                return new PaymentResponseDto { Message = "Dropoff date must be after pickup date", Status = "Failed" };
-
+            // calculate duration in hours
+            var duration = paymentDto.DropoffDate - paymentDto.PickupDate;
+            if (duration.TotalHours <= 0)
+                return new PaymentResponseDto { Message = "Dropoff must be after pickup", Status = "Failed" };
 
             var isBooked = await _context.Bookings
                 .AnyAsync(b =>
                     b.CarId == paymentDto.CarId &&
-                    b.Status == BookingStatues.Active &&
                     b.PickupDate < paymentDto.DropoffDate &&
                     b.DropoffDate > paymentDto.PickupDate
                 );
 
             if (isBooked)
-                return new PaymentResponseDto { Message = "Car is not available for the selected dates" ,Status ="Failed" };
+                return new PaymentResponseDto { Message = "Car is not available for the selected dates", Status = "Failed" };
 
-            var totalPrice = car.PricePerDay * days;
+           
+            var totalHours = (decimal)duration.TotalHours;
+            var pricePerHour = car.PricePerDay / 24; 
+            var totalPrice = Math.Round(pricePerHour * totalHours, 2);
 
             var booking = new Booking
             {
                 Id = Guid.NewGuid(),
                 CarId = paymentDto.CarId,
-
                 PickupLocation = paymentDto.PickupLocation,
                 PickupDate = paymentDto.PickupDate.ToUniversalTime(),
-
                 DropoffLocation = paymentDto.DropoffLocation,
                 DropoffDate = paymentDto.DropoffDate.ToUniversalTime(),
-
                 TotalPrice = totalPrice,
                 Status = BookingStatues.Reserved,
-
                 DropoffLat = paymentDto.DropoffLat,
                 DropoffLng = paymentDto.DropoffLng,
                 PickupLat = paymentDto.PickupLat,
                 PickupLng = paymentDto.PickupLng,
-
                 Payment = new Payment
                 {
                     Id = Guid.NewGuid(),
@@ -85,7 +82,6 @@ namespace MORENT.Repository.Implementations
             };
 
             _context.Bookings.Add(booking);
-
             await _context.SaveChangesAsync();
 
             return new PaymentResponseDto

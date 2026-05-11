@@ -21,7 +21,15 @@ namespace MORENT.Controllers
         {
             var result = await _paymentService.CreatePayment(paymentDto);
             if (result.Status == "Failed")
-                return BadRequest(result);
+            {
+                if (result.Message.Contains("not available"))
+                    return Conflict(result.Message);       
+
+                if (result.Message.Contains("Not Found"))
+                    return NotFound(result.Message);        
+
+                return BadRequest(result.Message);          
+            }
             return Ok(result);
         }
 
